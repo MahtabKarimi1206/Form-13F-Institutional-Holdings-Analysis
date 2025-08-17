@@ -18,6 +18,7 @@ EDGAR provides an API to access these filings, which include data on filing comp
 ▷What is the structure of the data? 
       I save the API data in two main tables: one for filings and one for holdings. These tables can be joined using filing_id.
       The filings table includes: 
+      **
       | Filings table         | Holdings table    |
       |-----------------------|------------------|
       | filing_id (PRIMARY KEY) | filing_id       |
@@ -28,3 +29,4 @@ EDGAR provides an API to access these filings, which include data on filing comp
       |                       | value            |
       |                       | shares           |
       |                       | put_call         |
+      **
