@@ -18,7 +18,6 @@ EDGAR provides an API to access these filings, which include data on filing comp
 ▷What is the structure of the data? 
       I save the API data in two main tables: one for filings and one for holdings. These tables can be joined using filing_id:
   
-
       ```
       | Filings table            |
       |--------------------------|
@@ -40,3 +39,12 @@ EDGAR provides an API to access these filings, which include data on filing comp
       | shares            |
       | put_call          |
       ```
+
+ 📏How to get the institutional investors data? 
+
+ One straightforward way is to write Python code to retrieve the data (in JSON format) and then save it in a CSV file. The problem is that the volume of this data can be very large and consume a lot of RAM when used later in other scripts. To handle this, I use a PostgreSQL database to retrieve and store the data. This also allows me to leverage SQL tools to work with it more efficiently.
+ 
+      
+     
+      
+      
