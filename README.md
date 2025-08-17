@@ -42,7 +42,16 @@ EDGAR provides an API to access these filings, which include data on filing comp
 
  📏How to get the institutional investors data? 
 
- One straightforward way is to write Python code to retrieve the data (in JSON format) and then save it in a CSV file. The problem is that the volume of this data can be very large and consume a lot of RAM when used later in other scripts. To handle this, I use a PostgreSQL database to retrieve and store the data. This also allows me to leverage SQL tools to work with it more efficiently.
+ One straightforward way is to write Python code to retrieve the data (in JSON format) and then save it in a CSV file. The problem is that the volume of this data can be very large and consume a lot of RAM when used later in other scripts. To handle this, I use a PostgreSQL database to retrieve and store the data. This also allows me to leverage SQL tools to work with it more efficiently.  ◼
+
+ 📏What do I do in this repo to get this data? 
+ 
+As mentioned earlier, I use Python, PostgreSQL, and the EDGAR API to retrieve and store the data in an efficient and reusable way.
+In general, I follow two steps:
+
+▨Set up and implement a PostgreSQL server.
+
+▨Use Python to retrieve the data from the API and save it into the database.
  
       
      
