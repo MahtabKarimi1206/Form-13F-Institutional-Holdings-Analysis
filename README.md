@@ -20,14 +20,23 @@ EDGAR provides an API to access these filings, which include data on filing comp
   
 
       ```
-      | Filings table            | Holdings table    |
-      |--------------------------|------------------ |
-      | filing_id (PRIMARY KEY)  | filing_id         |
-      | cik                      | name_of_issuer    |
-      | filer_name               | cusip             |
-      | period_of_report (date)  | cik               |
-      |                          | title_of_class    |
-      |                          | value             |
-      |                          | shares            |
-      |                          | put_call          |
+      | Filings table            ||
+      |--------------------------||
+      | filing_id (PRIMARY KEY)  ||
+      | cik                      ||
+      | filer_name               ||
+      | period_of_report (date)  ||
+
+      ```
+       ```
+      | Holdings table    |
+      |------------------ |
+      | filing_id         |
+      | name_of_issuer    |
+      | cusip             |
+      | cik               |
+      | title_of_class    |
+      | value             |
+      | shares            |
+      | put_call          |
       ```
