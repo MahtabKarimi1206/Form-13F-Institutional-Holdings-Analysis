@@ -11,6 +11,14 @@ Examples include hedge funds and pension funds. ◼
 
  Since 1978, institutional investment managers—including hedge funds—that exercise investment discretion over accounts with at least $100 million must file Form 13F with the SEC each quarter, within 45 days of quarter-end, as required by Section 13(f) of the Exchange Act. ◼
 
+📏Where to get institutional investor data?
+
+EDGAR provides an API to access these filings, which include data on filing companies and their holdings. The filing company is the institutional investor, and the holdings are the companies whose stocks they own.
+
+   📏📏What is the structure of the data? 
+       I use two tables 
+   
+
  
 
  
