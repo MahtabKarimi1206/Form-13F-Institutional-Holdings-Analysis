@@ -16,19 +16,18 @@ Examples include hedge funds and pension funds. ◼
 EDGAR provides an API to access these filings, which include data on filing companies and their holdings. The filing company is the institutional investor, and the holdings are the companies whose stocks they own.
 
 ▷What is the structure of the data? 
-      I save the API data in two main tables: one for filings and one for holdings. These tables can be joined using filing_id.
-      The filings table includes: 
+      I save the API data in two main tables: one for filings and one for holdings. These tables can be joined using filing_id:
+  
 
-      
       ```
-      | Filings table         | Holdings table    |
-      |-----------------------|------------------|
-      | filing_id (PRIMARY KEY) | filing_id       |
-      | cik                   | name_of_issuer   |
-      | filer_name            | cusip            |
-      | period_of_report (date) | cik             |
-      |                       | title_of_class   |
-      |                       | value            |
-      |                       | shares           |
-      |                       | put_call         |
+      | Filings table            | Holdings table    |
+      |--------------------------|------------------ |
+      | filing_id (PRIMARY KEY)  | filing_id         |
+      | cik                      | name_of_issuer    |
+      | filer_name               | cusip             |
+      | period_of_report (date)  | cik               |
+      |                          | title_of_class    |
+      |                          | value             |
+      |                          | shares            |
+      |                          | put_call          |
       ```
