@@ -20,12 +20,12 @@ EDGAR provides an API to access these filings, which include data on filing comp
   
 
       ```
-      | Filings table            ||
-      |--------------------------||
-      | filing_id (PRIMARY KEY)  ||
-      | cik                      ||
-      | filer_name               ||
-      | period_of_report (date)  ||
+      | Filings table            |
+      |--------------------------|
+      | filing_id (PRIMARY KEY)  |
+      | cik                      |
+      | filer_name               |
+      | period_of_report (date)  |
 
       ```
        ```
