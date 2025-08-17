@@ -15,7 +15,7 @@ Examples include hedge funds and pension funds. ◼
 
 EDGAR provides an API to access these filings, which include data on filing companies and their holdings. The filing company is the institutional investor, and the holdings are the companies whose stocks they own.
 
-   📏📏What is the structure of the data? 
+▶▷What is the structure of the data? 
        I use two tables 
    
 
