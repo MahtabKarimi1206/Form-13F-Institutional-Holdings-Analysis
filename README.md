@@ -17,40 +17,14 @@ EDGAR provides an API to access these filings, which include data on filing comp
 
 ▷What is the structure of the data? 
       I save the API data in two main tables: one for filings and one for holdings. These tables can be joined using filing_id.
-      The filings table includes:
-
-                                filing_id (PRIMARY KEY)
-
-cik
-
-filer_name
-
-period_of_report (date)
-
-The holdings table includes:
-
-filing_id
-
-name_of_issuer
-
-cusip
-
-cik
-
-title_of_class
-
-value
-
-shares
-
-put_call
-
-Each row in the filings table can map to multiple rows in the holdings table.
-   
-
- 
-
- 
-
-
-
+      The filings table includes: 
+      | Filings table         | Holdings table    |
+      |-----------------------|------------------|
+      | filing_id (PRIMARY KEY) | filing_id       |
+      | cik                   | name_of_issuer   |
+      | filer_name            | cusip            |
+      | period_of_report (date) | cik             |
+      |                       | title_of_class   |
+      |                       | value            |
+      |                       | shares           |
+      |                       | put_call         |
