@@ -57,7 +57,11 @@ The picture below shows a schematic of the overall process:
 ![Process Diagram](images/General_View.png)
 
  
-      
+ ▨Set up and implement a PostgreSQL server: 
+ 
+     I use pgAdmin to connect to the PostgreSQL database. There are other ways to do this, but since I already had pgAdmin installed on my PC, I chose this approach.
+
+     I assume you already have PostgreSQL and pgAdmin installed on your system. Open pgAdmin and, on the left side, create a new server with any name you like (I named mine Edgar). The server should point to      localhost and use the password you set up during installation.
      
       
       
