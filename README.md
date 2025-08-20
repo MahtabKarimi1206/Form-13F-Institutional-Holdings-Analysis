@@ -54,6 +54,7 @@ In general, I follow two steps:
 ▨Use Python to retrieve the data from the API and save it into the database.
 The picture below shows a schematic of the overall process:
 
+![Process Diagram](images/General_View.png)
 
  
       
