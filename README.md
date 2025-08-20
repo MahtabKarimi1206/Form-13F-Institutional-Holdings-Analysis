@@ -52,6 +52,9 @@ In general, I follow two steps:
 ▨Set up and implement a PostgreSQL server.
 
 ▨Use Python to retrieve the data from the API and save it into the database.
+The picture below shows a schematic of the overall process:
+
+
  
       
      
