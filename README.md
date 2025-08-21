@@ -108,7 +108,7 @@ The result should look something like this:
 PostgreSQL database version:
 ('PostgreSQL 17.4 on x86_64-windows, compiled by msvc-19.42.34436, 64-bit',)
 ```
-
+ ▨ Add tables to the database in python: 
 Now that we have confirmed we can properly connect to our database through Python, we can start adding tables to it.
 The database has three main tables:
 
@@ -172,3 +172,5 @@ def create_tables():
 If you call the function using create_tables() and then go to your PgAdmin database interface for the related server, refresh the tables section. You should see three tables — filings, holdings, and holding_infos — with the columns defined above. However, the point is that all the tables are empty — they only contain the column names. To fill them, I connect to the EDGAR API to retrieve the data and then insert it into the corresponding columns defined above.
 
 The first step is to connect to the EDGAR API. To do this, you need an API key, which you can obtain at https://sec-api.io. Then, import the sec_api module in Python. Next, write a query to connect to the API and retrieve the data in Python.
+
+
