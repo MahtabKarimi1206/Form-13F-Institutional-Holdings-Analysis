@@ -169,8 +169,14 @@ def create_tables():
     # make the changes to the database persistent
     conn.commit()
 ```
-If you call the function using create_tables() and then go to your PgAdmin database interface for the related server, refresh the tables section. You should see three tables — filings, holdings, and holding_infos — with the columns defined above. However, the point is that all the tables are empty — they only contain the column names. To fill them, I connect to the EDGAR API to retrieve the data and then insert it into the corresponding columns defined above.
+If you call the above function using create_tables() and then go to your PgAdmin database interface for the related server, refresh the tables section. You should see three tables — filings, holdings, and holding_infos — with the columns defined above. However, the point is that all the tables are empty — they only contain the column names. To fill them, I connect to the EDGAR API to retrieve the data and then insert it into the corresponding columns defined above.
 
-The first step is to connect to the EDGAR API. To do this, you need an API key, which you can obtain at https://sec-api.io. Then, import the sec_api module in Python. Next, write a query to connect to the API and retrieve the data in Python.
+The first step is to connect to the EDGAR API. To do this, you need an API key, which you can obtain at https://sec-api.io. Then, import the sec_api module in Python.
+```python
+from sec_api import QueryApi
+
+queryApi = QueryApi(api_key='***')
+```
+Next, write a query to connect to the API and retrieve the data in Python. 
 
 
