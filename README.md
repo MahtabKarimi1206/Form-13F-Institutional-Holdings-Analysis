@@ -177,7 +177,7 @@ from sec_api import QueryApi
 
 queryApi = QueryApi(api_key='***')
 ```
-Next, I write a query to connect to the API and retrieve the data in Python. One point worth explaining here is how an API works in practice. The query shown below has specific characteristics, such as the form type and the time horizon from which I want to fetch the data. In my case, I want all filings after 2000-01-01 from form 13F-HR, excluding 13F-HR/A. Typically, each API’s documentation explains these details. For this type of form and query, the relevant documentation can be found here: https://sec-api.io/docs/form-13-f-filings-institutional-holdings-api.
+▨ Next, I write a query to connect to the API and retrieve the data in Python. One point worth explaining here is how an API works in practice. The query shown below has specific characteristics, such as the form type and the time horizon from which I want to fetch the data. In my case, I want all filings after 2000-01-01 from form 13F-HR, excluding 13F-HR/A. Typically, each API’s documentation explains these details. For this type of form and query, the relevant documentation can be found here: https://sec-api.io/docs/form-13-f-filings-institutional-holdings-api.
 
 Another important point is that this data has a large volume, so retrieving everything at once is not feasible. Instead, we use a process called pagination. In pagination, we specify a starting point and a page size. The query then fetches data in chunks of that size. For example, if the start is set to 0 and the size is 100, the program retrieves 100 entries beginning at index 0. By increasing the start by the page size, the query moves to the next page (the next 100 entries, in this case) and loads them into Python.
 
