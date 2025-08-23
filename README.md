@@ -214,7 +214,7 @@ holdings_example = pd.json_normalize(filings_batch[0]['holdings'])
 ```
 ▨ Up to this point, we know how to set up the database, connect to it in Python, and write a query to retrieve data from the API into Python. The final step is to write a function that inserts the data into the database using Python.
 
-Here, I write a function to populate the filings and holdings tables. Initially, I created three tables, but I will not use the third one, which is a mapping of the filings’ identifiers. The reason is that the mapping provided by EDGAR does not include a timestamp. For this, I rely on Compustat mappings instead. Since that is beyond the scope of this notebook, I will not address it here.
+Here, I write a function to fill the filings and holdings tables. Initially, I created three tables, but I will not use the third one, which is a mapping of the filings’ identifiers. The reason is that the mapping provided by EDGAR does not include a timestamp. For this, I rely on Compustat mappings instead. Since that is beyond the scope of this notebook, I will not address it here.
 
 ```python
 
@@ -293,4 +293,35 @@ def save_to_db(filings):
     cur.close()
     conn.commit()
     ```
+Finally, I write a loop to retrieve all the data through pagination and then write it to the database. Notice how, at the end of each iteration of the loop, I increase the starting point by the value of the page size to move to the next set of data.
+
+```python
+
+def fill_database():
+   
+    start = 0  # Starting index for pagination
+    while True:
+        # Starting index for pagination
+        filings = get_13f_filings(start=start)
+
+        # If no filings are returned, exit the loop (end of data)
+        if not filings:
+            break
+
+        # Save the retrieved filings into the database
+        save_to_db(filings)
+        print('.')
+
+         # Move the starting point forward by 100 (the page size)
+        start += 100
+
+    # Sanity check: count total rows in the 'holdings' table
+    with conn.cursor() as cur:
+        cur.execute("SELECT COUNT(*) FROM public.holdings")
+        print("Total holdings in DB:", cur.fetchone()[0])
+
+
+         # Indicate the process is complete
+    print("Done")
+```
 
