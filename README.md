@@ -293,7 +293,7 @@ def save_to_db(filings):
     cur.close()
     conn.commit()
     ```
-Finally, I write a loop to retrieve all the data through pagination and then write it to the database. Notice how, at the end of each iteration of the loop, I increase the starting point by the value of the page size to move to the next set of data.
+▨ Finally, I write a loop to retrieve all the data through pagination and then write it to the database. Notice how, at the end of each iteration of the loop, I increase the starting point by the value of the page size to move to the next set of data.
 
 ```python
 
@@ -324,4 +324,24 @@ def fill_database():
          # Indicate the process is complete
     print("Done")
 ```
+Now, if I call this last function, which serves as the main function, by typing fill_database(), the output will look something like this:
 
+```python
+Getting next 13F batch starting at 0
+i
+.
+Getting next 13F batch starting at 100
+i
+.
+Getting next 13F batch starting at 200
+i
+.
+Getting next 13F batch starting at 300
+i
+.
+Getting next 13F batch starting at 400
+i
+.
+.
+.
+```
