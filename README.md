@@ -212,5 +212,85 @@ filings_batch = get_13f_filings()
 # This flattens the nested JSON structure into tabular format
 holdings_example = pd.json_normalize(filings_batch[0]['holdings'])
 ```
+▨ Up to this point, we know how to set up the database, connect to it in Python, and write a query to retrieve data from the API into Python. The final step is to write a function that inserts the data into the database using Python.
 
+Here, I write a function to populate the filings and holdings tables. Initially, I created three tables, but I will not use the third one, which is a mapping of the filings’ identifiers. The reason is that the mapping provided by EDGAR does not include a timestamp. For this, I rely on Compustat mappings instead. Since that is beyond the scope of this notebook, I will not address it here.
+
+```python
+
+def save_to_db(filings):
+    # Create a cursor object to execute SQL commands
+    cur = conn.cursor()
+
+     # Loop over each filing in the list of filings
+
+    for filing in filings:
+        # Skip this filing if it has no holdings
+        if len(filing["holdings"]) == 0:
+            continue
+
+        # SQL insert commands for filings and holdings tables
+        # Note: filings use ON CONFLICT (filing_id) DO NOTHING to avoid duplicates
+
+        insert_commands = (
+            """
+                INSERT INTO filings (
+                    filing_id, 
+                    cik,
+                    filer_name,
+                    period_of_report
+                ) 
+                
+                VALUES (%s, %s, %s, %s)
+                ON CONFLICT (filing_id) DO NOTHING
+            """,
+            """
+                INSERT INTO holdings (
+                    filing_id, 
+                    name_of_issuer,
+                    cusip,
+                    cik,
+                    title_of_class,
+                    value,
+                    shares,
+                    put_call
+                ) 
+                VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+            """,
+        )
+
+        # Values for inserting into the filings table
+
+        filing_values = (
+            filing["id"],                                   # Unique filing identifier
+            filing["cik"],                                  # Central Index Key
+            filing["companyName"].upper(),                  # Convert company name to uppercase
+            filing["periodOfReport"],                        # Reporting period
+        )
+
+          # Insert filing data into the filings table
+        cur.execute(insert_commands[0], filing_values)
+
+          # Loop through all holdings associated with this filing
+        for holding in filing["holdings"]:
+
+            # Prepare values for inserting into the holdings table
+            holding_values = (
+                filing["id"],                                                               # Foreign key to link back to filings
+                holding["nameOfIssuer"].upper(),                                            # Issuer name, converted to uppercase
+                holding["cusip"],                                                           # Security identifier (CUSIP)
+                holding.get("cik", ""),                                                     # Some holdings may not have a CIK
+                holding["titleOfClass"] if "titleOfClass" in holding else "",               # Security class
+                holding["value"],                                                           # Value of the holding
+                holding["shrsOrPrnAmt"]["sshPrnamt"],                                       # Number of shares
+                holding["putCall"] if "putCall" in holding else ""                          # Option type (if any)
+            )
+
+             # Insert holding data into the holdings table
+            cur.execute(insert_commands[1], holding_values)
+
+     # Close cursor and commit changes to the database    
+    cur.close()
+    conn.commit()
+    ```
 
