@@ -177,6 +177,40 @@ from sec_api import QueryApi
 
 queryApi = QueryApi(api_key='***')
 ```
-Next, write a query to connect to the API and retrieve the data in Python. 
+Next, I write a query to connect to the API and retrieve the data in Python. One point worth explaining here is how an API works in practice. The query shown below has specific characteristics, such as the form type and the time horizon from which I want to fetch the data. In my case, I want all filings after 2000-01-01 from form 13F-HR, excluding 13F-HR/A. Typically, each API’s documentation explains these details. For this type of form and query, the relevant documentation can be found here: https://sec-api.io/docs/form-13-f-filings-institutional-holdings-api.
+
+Another important point is that this data has a large volume, so retrieving everything at once is not feasible. Instead, we use a process called pagination. In pagination, we specify a starting point and a page size. The query then fetches data in chunks of that size. For example, if the start is set to 0 and the size is 100, the program retrieves 100 entries beginning at index 0. By increasing the start by the page size, the query moves to the next page (the next 100 entries, in this case) and loads them into Python.
+
+```python
+def get_13f_filings(start=0, size=100):
+    # Print a message showing which batch is being requested
+    print(f"Getting next 13F batch starting at {start}")
+    
+    query = {
+      # Define the query for the EDGAR API
+      # - Only retrieve 13F-HR filings (exclude amended 13F-HR/A)
+      # - Filter filings from January 1, 2000 onwards
+      # - Paginate results with 'from' (start index) and 'size' (batch size)
+      # - Sort results by filing date in descending order
+      "query": { "query_string": { 
+          "query": "formType:\"13F-HR\" AND NOT formType:\"13F-HR/A\" AND periodOfReport:{ 2000-01-01 TO *}" 
+        } },
+      "from": start,
+      "size": size,
+      "sort": [{ "filedAt": { "order": "desc" } }]
+    }
+    # Send the query to the EDGAR API
+    response = queryApi.get_filings(query)
+
+    # Return only the list of filings from the API response
+    return response['filings']
+
+# Fetch the 10 most recent 13F filings (default size=100, here explicitly set to 10 if needed)
+filings_batch = get_13f_filings()
+
+# Load all holdings of the first 13F filing into a pandas DataFrame
+# This flattens the nested JSON structure into tabular format
+holdings_example = pd.json_normalize(filings_batch[0]['holdings'])
+```
 
 
