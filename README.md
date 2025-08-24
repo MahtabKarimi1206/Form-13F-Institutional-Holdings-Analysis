@@ -345,3 +345,10 @@ i
 .
 .
 ```
+The notebook Edgar_Github.ipynb in the code folder puts all these pieces together.
+
+
+**References:**
+-https://sec-api.io/docs/form-13-f-filings-institutional-holdings-api
+-https://medium.com/@jan_5421/analyzing-13f-sec-filings-and-buy-sell-activities-of-institutional-investment-managers-using-python-8bba3dfafd7d
+
