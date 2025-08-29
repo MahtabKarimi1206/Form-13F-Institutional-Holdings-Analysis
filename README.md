@@ -349,9 +349,42 @@ The notebook Edgar_Github.ipynb in the code folder puts all these pieces togethe
 
 ▨ **Application: How can we calculate the total number of shares held by institutional investors and their corresponding value for each firm (holding)?**
 
+To be clear, we have filers and holdings. Filers are institutional investors, and holdings are the firms whose stock is held by institutional investors.
+In the SQL code below, I calculate the total value and number of shares for each holding.
 
 
 
+```sql
+
+-- Create a temporary table (CTE) with relevant fields from holdings and filings
+
+with main_table as (
+select holdings.cusip as holding_cusip,   -- CUSIP identifier for the holding (firm)
+	   holdings.name_of_issuer,			  -- Name of the firm (issuer of stock)
+	   holdings.cik as holding_cik,	  -- CIK of the firm (holding)
+	   holdings.shares,					  -- Number of shares held
+	   holdings. value,					  -- Value of those shares
+	   filings.period_of_report,		  -- Reporting period from the filing
+	   filings.cik,						  -- CIK of the filer (institutional investor)
+	   filings.filing_id				  -- Filing identifier (link between tables)
+	   
+from holdings 
+join filings on holdings.filing_id=filings.filing_id    -- Match each holding with its filing
+where holdings.shares is not null)                      -- Exclude rows where shares are missing
+
+-- Aggregate results: total shares and total value per firm (holding) and report period
+select holding_cik, 									-- Firm’s CIK
+	   holding_cusip,									-- Firm’s CUSIP
+		period_of_report,								-- Reporting period
+		sum(shares) as all_shares, 						-- Total number of shares held by institutions
+		sum(value) as all_value 						 -- Total value of those shares
+from  main_table 
+where holding_cik is not null							-- Ensure firm has a valid CIK
+group by holding_cik, holding_cusip, period_of_report  -- Group at firm-period level
+order by period_of_report asc							-- Sort by reporting period (earliest first)
+;
+
+```
 **References:**
 
 -https://sec-api.io/docs/form-13-f-filings-institutional-holdings-api
