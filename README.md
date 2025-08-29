@@ -347,6 +347,10 @@ i
 ```
 The notebook Edgar_Github.ipynb in the code folder puts all these pieces together.
 
+▨ **Application: How can we calculate the total number of shares held by institutional investors and their corresponding value for each firm (holding)?**
+
+
+
 
 **References:**
 
