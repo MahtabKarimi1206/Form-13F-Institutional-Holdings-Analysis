@@ -385,6 +385,17 @@ order by period_of_report asc							-- Sort by reporting period (earliest first)
 ;
 
 ```
+
+▨ **Application: How can we calculate the institutional block ownership for each firm (holding)?**
+
+To answer this question, I first need to define what I mean by institutional block ownership. Institutional block ownership refers to institutional shareholders that hold more than 5% of a firm’s total shares outstanding. To estimate this metric, we need data on institutional ownership as well as data on the firm’s total number of shares outstanding. We already have the former, but to obtain the latter I use the WRDS platform and then Compustat to collect quarterly data on the total number of shares outstanding and its price. 
+
+So, I assume the shares data and their prices from Compustat are provided here. I download the Compustat data from the first quarter of 2000 to the present. The important variables for me are CIK, CUSIP, datadate, number of shares, and share price. (Most schools usually have a subscription to Compustat, and I hope you also have access to it.)
+
+
+
+
+
 **References:**
 
 -https://sec-api.io/docs/form-13-f-filings-institutional-holdings-api
