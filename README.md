@@ -393,8 +393,63 @@ To answer this question, I first need to define what I mean by institutional blo
 So, I assume the shares data and their prices from Compustat are provided here. I download the Compustat data from the first quarter of 2000 to the present. The important variables for me are CIK, CUSIP, datadate, number of shares, and share price. (Most schools usually have a subscription to Compustat, and I hope you also have access to it.)
 
 
+In the Python code below, I import the Compustat data from my local drive and clean it. I will then use this data to import into PgAdmin and add it to the SQL database tables.
+
+```python
+# Import the raw quarterly shares data from Compustat (after 2000)
+shares=pd.read_csv("**/cshq_WRDS_quarterly.csv")
+
+# Drop unnecessary columns related to consolidation, data format, currency, and company status
+shares=shares.drop(columns=['consol','datafmt','curcdq','costat'])
+shares=shares.drop_duplicates()
+
+# Count how many times each (cusip, datadate) pair appears based on reporting format (indfmt)
+shares['g_count']=shares.groupby(['cusip', 'datadate'])['indfmt'].transform('count')
+
+# Keep groups with a single observation (unique reporting format)
+shares_unique=shares[shares['g_count']==1]
+shares_non_unique=shares[shares['g_count']==2]
 
 
+def fill_missing_values(group):
+    
+        # Assign priority to reporting formats: INDL (1) > FS (0)
+        group['format_priority']=group['indfmt'].map({'INDL':1, 'FS':0})
+    
+        # Sort the group so that the INDL row comes first
+        group=group.sort_values(by=['format_priority'], ascending=[False])
+    
+        # Fill missing values in the INDL row using values from the FS row
+        filled = group.iloc[0].combine_first(group.iloc[1])
+
+        # Return the filled row as a one-row DataFrame, excluding the helper column
+        return pd.DataFrame([filled.drop(labels='format_priority')])
+
+# Apply the function to all groups with two rows (cusip, datadate)
+raw_shares_not_unique_filled=shares_non_unique.groupby(['cusip','datadate']).apply(fill_missing_values).reset_index(drop=True)
+
+# Drop helper column 'g_count' (no longer needed after filling)
+raw_shares_not_unique_filled=raw_shares_not_unique_filled.drop(columns=['g_count'])
+raw_shares_not_unique_filled=raw_shares_not_unique_filled.drop_duplicates()
+
+# Drop quarterly identifiers and reporting format columns (not needed anymore)
+raw_shares_not_unique_filled=raw_shares_not_unique_filled.drop(columns=['datacqtr','datafqtr','indfmt'])
+raw_shares_not_unique_filled=raw_shares_not_unique_filled.drop_duplicates()
+
+# Clean the unique dataset in the same way: remove extra columns and duplicates
+shares_unique=shares_unique.drop(columns=['indfmt','datacqtr','datafqtr','g_count'])
+shares_unique=shares_unique.drop_duplicates()
+
+# Combine the unique rows and the cleaned non-unique rows into one dataset
+all_unique_shares=pd.concat([shares_unique, raw_shares_not_unique_filled], axis=0)
+
+# Check if there are still any duplicate (cusip, datadate) rows left
+# False means that there are no duplicates
+all_unique_shares.duplicated(subset=['cusip','datadate']).any()
+
+all_unique_shares.to_csv("***/shares_compustat.csv", index=False)
+
+```
 
 **References:**
 
